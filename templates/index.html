@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALADDIN</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f4f6f8;
+        }
+        .card {
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.02);
+        }
+        footer {
+            background-color: #343a40;
+            padding: 1rem 0;
+            text-align: center;
+            color: #fff;
+            margin-top: 3rem;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .btn {
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .card {
+            width: 100%; /* Ensures all cards have the same width */
+            max-width: 800px; /* Adjust to match your other sections */
+            margin: 0 auto; /* Centers the card */
+        }
+
+        .log-box {
+            max-width: 100%; /* Prevents overflow */
+            overflow-x: auto; /* Enables horizontal scrolling */
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+            </style>
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-robot me-2"></i>ALADDIN_66</a>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <h1 class="text-center mb-5 text-primary">Welcome to the Tire Compound Prediction System</h1>
+
+        <div class="card shadow-lg mb-5">
+            <div class="card-body">
+                <p class="card-text">
+                    Your AI-powered assistant for optimal tire selection in Formula 1 racing! This system leverages machine learning to predict the best tire compound for the remaining laps based on race conditions, ensuring maximum performance, safety, and strategy.
+                </p>
+        
+                <h6>How It Works</h6>
+                <p class="card-text">
+                    Our system uses a neural network to analyze key input features such as:
+                </p>
+                <ul>
+                    <li><strong>Lap Number:</strong> The current lap in the race.</li>
+                    <li><strong>Temperature:</strong> The track temperature, which significantly affects tire performance.</li>
+                    <li><strong>Weather:</strong> The weather conditions, which can be sunny, rainy, or other variations that impact tire choice.</li>
+                    <li><strong>Driving Style:</strong> The driver’s style, such as aggressive or conservative, affecting tire wear.</li>
+                    <li><strong>Laps Remaining:</strong> The remaining laps in the race, which helps determine if a softer or harder compound is more appropriate.</li>
+                </ul>
+                <p class="card-text">
+                    Based on these inputs, the system predicts the most suitable tire compound from a list of options: Soft, Medium, Hard, Intermediate, and Wet.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Model Prediction -->
+        <div class="card mb-4 shadow-lg">
+            <div class="card-header bg-primary text-white section-title">
+                <i class="fas fa-magic me-2"></i> Tire Compound Prediction
+            </div>
+            <div class="card-body">
+                <p>Enter race conditions to predict the optimal tire compound.</p>
+                <form id="predict-form">
+                    <!-- Lap -->
+                    <div class="mb-3">
+                        <label for="lap" class="form-label">Lap</label>
+                        <input type="number" class="form-control" id="lap" name="lap" required>
+                    </div>
+
+                    <!-- Temperature -->
+                    <div class="mb-3">
+                        <label for="temperature" class="form-label">Temperature (°C)</label>
+                        <input type="number" class="form-control" id="temperature" name="temperature" required>
+                    </div>
+
+                    <!-- Weather -->
+                    <div class="mb-3">
+                        <label for="weather" class="form-label">Weather</label>
+                        <select class="form-control" id="weather" name="weather" required>
+                            <option value="Sunny">Sunny</option>
+                            <option value="Cloudy">Cloudy</option>
+                            <option value="Rainy">Rainy</option>
+                            <option value="Mixed">Mixed</option>
+                        </select>
+                    </div>
+
+                    <!-- Driving Style -->
+                    <div class="mb-3">
+                        <label for="driving_style" class="form-label">Driving Style</label>
+                        <select class="form-control" id="driving_style" name="driving_style" required>
+                            <option value="Aggressive">Aggressive</option>
+                            <option value="Balanced">Balanced</option>
+                            <option value="Conservative">Conservative</option>
+                        </select>
+                    </div>
+
+                    <!-- Laps Remaining -->
+                    <div class="mb-3">
+                        <label for="laps_remaining" class="form-label">Laps Remaining</label>
+                        <input type="number" class="form-control" id="laps_remaining" name="laps_remaining" required>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-chart-line me-1"></i> Predict Tire Compound
+                    </button>
+                </form>
+
+                <!-- Prediction Result -->
+                <div id="prediction-result" class="alert alert-info mt-3" role="alert" style="display: none;"></div>
+            </div>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                document.getElementById("predict-form").addEventListener("submit", function (event) {
+                    event.preventDefault(); // Prevent default form submission
+
+                    // Get input values
+                    let lap = document.getElementById("lap").value;
+                    let temperature = document.getElementById("temperature").value;
+                    let weather = document.getElementById("weather").value;
+                    let drivingStyle = document.getElementById("driving_style").value;
+                    let lapsRemaining = document.getElementById("laps_remaining").value;
+
+                    // Prepare JSON data
+                    let requestData = {
+                        lap: parseInt(lap),  // Ensure numerical values
+                        temperature: parseFloat(temperature),
+                        weather: weather, 
+                        driving_style: drivingStyle, 
+                        laps_remaining: parseInt(lapsRemaining)
+                    };
+
+                    // Send request to FastAPI backend
+                    fetch("http://127.0.0.1:8000/predict", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(requestData)
+                    })
+                    .then(response => response.json()) 
+                    .then(data => {
+                        console.log("Response:", data); // Debugging
+
+                        // Check if the response contains the prediction
+                        if (data.tire_compound) {
+                            document.getElementById("prediction-result").innerHTML = 
+                                `<strong>Predicted Tire Compound:</strong> ${data.tire_compound}`;
+                            document.getElementById("prediction-result").style.display = "block";
+                        } else {
+                            document.getElementById("prediction-result").innerHTML = 
+                                "Error: No prediction received.";
+                            document.getElementById("prediction-result").style.display = "block";
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        document.getElementById("prediction-result").innerHTML = "Prediction failed!";
+                        document.getElementById("prediction-result").style.display = "block";
+                    });
+                });
+            });
+            </script>
+            
+<!-- Visualizations -->
+<div class="card mb-4 shadow-lg">
+    <div class="card-header bg-info text-white section-title">
+        <i class="fas fa-chart-bar me-2"></i> Visualizations
+    </div>
+    <div class="card-body">
+        <p>
+            This section provides visual insights into the most important features of your dataset. 
+            Use these plots to understand trends and patterns that influence model decisions.
+        </p>
+
+        <div class="row justify-content-center">
+            <!-- Feature 1: Tire Compound Distribution -->
+            <div class="col-md-6 text-center mb-4">
+                <img src="/static/distribution_graph.png" class="img-fluid img-large rounded shadow" alt="Tire Compound Distribution">
+                <h6 class="mt-3"><b>Tire Compound Distribution</b></h6>
+                <p class="text-muted">
+                    The visualization shows the frequency of each tire compound selection. You can see which tire compounds 
+                    are most commonly used and if there's any imbalance in the dataset.
+                </p>
+            </div>
+
+            <!-- Feature 2: Temperature vs Tire Compound -->
+            <div class="col-md-6 text-center mb-4">
+                <img src="/static/tempreture_vs_tire.png" class="img-fluid img-large rounded shadow" alt="Temperature vs Tire Compound">
+                <h6 class="mt-3"><b>Temperature vs. Tire Compound</b></h6>
+                <p class="text-muted">
+                    This box plot shows how temperature influences tire selection. It helps understand the preferred compounds in different temperature ranges.
+                </p>
+            </div>
+
+            <!-- Feature 3: Weather vs Tire Compound -->
+            <div class="col-md-6 text-center mb-4">
+                <img src="/static/weather_vs_tire.png" class="img-fluid img-large rounded shadow" alt="Weather vs Tire Compound">
+                <h6 class="mt-3"><b>Weather vs. Tire Compound</b></h6>
+                <p class="text-muted">
+                    This visualization highlights how weather conditions impact tire choices. You can see which compounds are used in different weather scenarios.
+                </p>
+            </div>
+        </div>
+
+        <!-- Storytelling Section -->
+        <div class="mt-4 p-4 bg-light rounded shadow">
+            <h5 class="text-primary"><b>🔍 Story Behind the Data</b></h5>
+            <p class="text-muted">
+                The visualizations tell a story about the factors that influence race strategy decisions, particularly tire selection.
+            </p>
+            <ul>
+                <li>Tire compound choices depend on temperature, weather, and track characteristics.</li>
+                <li>Certain tire compounds are preferred in specific conditions (e.g., wet tires in rain).</li>
+                <li>Teams adjust strategies based on conditions to optimize performance.</li>
+                <li>Understanding these relationships helps predict optimal tire choices.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<!-- Data Management -->
+<div class="card mb-4 shadow-lg">
+    <div class="card-header bg-warning section-title">
+        <i class="fas fa-database me-2"></i>Data Management
+    </div>
+    <div class="card-body">
+        <p>Retrieve the latest race data from the database for model retraining.</p>
+        <button class="btn btn-primary" id="fetch-data-btn">
+            <i class="fas fa-cloud-download-alt me-1"></i> Fetch Latest Data
+        </button>
+        <div id="data-status" class="alert alert-secondary mt-3" role="alert" style="display: none;"></div>
+    </div>
+</div>
+
+<!-- Retrain Model -->
+<div class="card shadow-lg">
+    <div class="card-header bg-danger text-white section-title"><i class="fas fa-sync-alt me-2"></i>Trigger Model Retraining</div>
+    <div class="card-body">
+        <p>Click the button below to initiate retraining using all available data in the database.</p>
+        <button class="btn btn-danger" id="retrain-btn"><i class="fas fa-redo me-1"></i> Retrain Model</button>
+        <div id="retrain-status" class="alert alert-warning mt-3" role="alert" style="display: none;"></div>
+    </div>
+</div>
+
+<!-- Training Logs -->
+<div class="card shadow-lg mt-4">
+    <div class="card-header bg-info text-white section-title">
+        <i class="fas fa-terminal me-2"></i> Training Metrics
+    </div>
+    <div class="card-body">
+        <div id="metrics-container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Latest Training Results</h5>
+                    <ul class="list-group mb-3" id="training-metrics">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Accuracy
+                            <span class="badge bg-primary rounded-pill" id="accuracy-metric">-</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Loss
+                            <span class="badge bg-primary rounded-pill" id="loss-metric">-</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            F1 Score
+                            <span class="badge bg-primary rounded-pill" id="f1-metric">-</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5>Training Details</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Last Trained
+                            <span class="badge bg-info rounded-pill" id="timestamp-metric">-</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Training Samples
+                            <span class="badge bg-info rounded-pill" id="samples-metric">-</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Model Version
+                            <span class="badge bg-info rounded-pill" id="version-metric">-</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+       // Fetch Data from Database
+    document.getElementById("fetch-data-btn").addEventListener("click", async () => {
+        const statusElement = document.getElementById("data-status");
+        statusElement.style.display = "block";
+        statusElement.className = "alert alert-info";
+        statusElement.textContent = "Fetching data from database...";
+        
+        try {
+            const response = await fetch("/upload");  // This should be your endpoint that gets all data
+            const result = await response.json();
+            
+            if (response.ok) {
+                statusElement.className = "alert alert-success";
+                statusElement.textContent = `Successfully retrieved ${result.data.length} records`;
+            } else {
+                throw new Error(result.message || "Failed to fetch data");
+            }
+        } catch (error) {
+            statusElement.className = "alert alert-danger";
+            statusElement.textContent = error.message;
+        }
+    });
+
+    // Handle Retraining
+    document.getElementById("retrain-btn").addEventListener("click", async () => {
+        const statusElement = document.getElementById("retrain-status");
+        statusElement.style.display = "block";
+        statusElement.className = "alert alert-info mt-3";
+        statusElement.textContent = "Retraining started...";
+        
+        try {
+            const response = await fetch("/retrain", {
+                method: "POST"
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                statusElement.className = "alert alert-success mt-3";
+                statusElement.textContent = `Retraining completed! Accuracy: ${result.accuracy.toFixed(2)}`;
+                
+                // Update metrics display
+                fetchLatestMetrics();
+            } else {
+                throw new Error(result.detail || "Retraining failed");
+            }
+        } catch (error) {
+            statusElement.className = "alert alert-danger mt-3";
+            statusElement.textContent = error.message;
+        }
+    });
+
+    // Fetch and display training metrics
+    async function fetchLatestMetrics() {
+        try {
+            const response = await fetch("/logs");
+            const metrics = await response.json();
+            
+            if (response.ok) {
+                document.getElementById("accuracy-metric").textContent = metrics.accuracy?.toFixed(2) || '-';
+                document.getElementById("loss-metric").textContent = metrics.loss?.toFixed(4) || '-';
+                document.getElementById("f1-metric").textContent = metrics.f1_score?.toFixed(2) || '-';
+                document.getElementById("timestamp-metric").textContent = 
+                    metrics.last_trained ? new Date(metrics.last_trained).toLocaleString() : '-';
+                document.getElementById("samples-metric").textContent = 
+                    metrics.training_details?.training_samples || '-';
+                document.getElementById("version-metric").textContent = 
+                    metrics.model_version || '-';
+            }
+        } catch (error) {
+            console.error("Error fetching metrics:", error);
+        }
+    }
+
+    // Load metrics when page loads
+    document.addEventListener("DOMContentLoaded", fetchLatestMetrics);
+</script>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p class="mb-0">&copy; 2025 <strong>ML Dashboard</strong>. Built with ❤️ and FastAPI.</p>
+        </div>
+    </footer> 
+</body>
+</html>
