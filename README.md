@@ -83,6 +83,20 @@ Load testing was conducted using **Locust** to simulate high traffic and analyze
   ![Flood Simulation](/Locust_charts.png)
   ![Flood Simulation](/Locust_logs.png)
 
+# Explanation 
+These images above showcase the results of the Flood Request Simulation using Locust to evaluate the API's performance under load.
+
+# Locust Test Report (Locust_logs.png)
+  - Provides detailed request statistics, including the total number of requests, response time, and failure rate.
+  - Confirms that all requests to /predict and /retrain endpoints were successful with zero failures.
+  - Highlights response time metrics, showcasing latency at different percentiles.
+
+# Performance Charts (Locust_charts.png)
+  -Total Requests per Second: Shows API request throughput over time.
+  -Response Times (ms): Displays how response times evolved, with percentile-based analysis.
+  -Number of Users: Visualizes the number of concurrent users simulated during testing.
+
+These results validate the robustness and scalability of the deployed API under simulated load conditions.
 
 ### 📁 Files:
 -  [Flood Simulation Results](/Locust_logs.png) 
