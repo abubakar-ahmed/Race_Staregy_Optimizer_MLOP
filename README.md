@@ -23,19 +23,19 @@ Watch the full project demo here:
 
 ---
 
-# 🌍 **Live Links**
+# **Live Links**
 
-### 🔧 **Live API Endpoint (FastAPI)**
+### **Live API Endpoint (FastAPI)**
 Link: https://race-staregy-optimizer-mlop.onrender.com/docs
 
-### 🖥️ **Frontend Web App**
+### **Frontend Web App**
 Link: https://race-staregy-optimizer-mlop.onrender.com/home
 
 ---
 
-## ⚙️ **Setup Instructions**
+## **Setup Instructions**
 
-### 🔁 Clone the Repository
+### Clone the Repository
 ```bash
 git clone https://github.com/yourusername/race-strategy-optimizer.git
 cd race-strategy-optimizer
@@ -73,7 +73,7 @@ Visit `http://127.0.0.1:8000/docs` for the Swagger UI!
 
 ---
 
-## 🧪 **Flood Request Simulation Results**
+## **Flood Request Simulation Results**
 
 Load testing was conducted using **Locust** to simulate high traffic and analyze the system's robustness.
 
@@ -92,9 +92,9 @@ These images above showcase the results of the Flood Request Simulation using Lo
   - Highlights response time metrics, showcasing latency at different percentiles.
 
 # Performance Charts (Locust_charts.png)
-  -Total Requests per Second: Shows API request throughput over time.
-  -Response Times (ms): Displays how response times evolved, with percentile-based analysis.
-  -Number of Users: Visualizes the number of concurrent users simulated during testing.
+  - Total Requests per Second: Shows API request throughput over time.
+  - Response Times (ms): Displays how response times evolved, with percentile-based analysis.
+  - Number of Users: Visualizes the number of concurrent users simulated during testing.
 
 These results validate the robustness and scalability of the deployed API under simulated load conditions.
 
