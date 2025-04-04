@@ -4,9 +4,10 @@
 
 ## **Project Description**
 
-The **Race Strategy Optimizer** is a web application that predicts the **optimal tire compound** (`soft`, `medium`, `hard`, `wet` or `intermidiate`) based on a combination of race parameters. It leverages a neural network classification model trained on a synthetic dataset to simulate real-world Formula 1 decision-making.  
+The **Race Strategy Optimizer** is a web application that predicts the **optimal tire compound** (`soft`, `medium`, `hard`, `wet` or `intermidiate`) based on a combination of race parameters. It leverages a neural network classification model trained on a synthetic dataset to simulate real-world Formula 1 decision-making.
+
 ---
-# Featuers
+# Features
 ---
 1. **Tire Prediction**  
    - Users can input values into the model, and the system predicts the optimal tire selection for that instance using a pre-trained machine learning model.
@@ -25,6 +26,7 @@ The **Race Strategy Optimizer** is a web application that predicts the **optimal
    - A **flood request simulation** was conducted using **Locust software** to evaluate system performance under heavy load.
 
 The application is built using **HTML**, **CSS**, and **JavaScript** for the frontend, while the backend is developed with **FastAPI**. The machine learning pipeline was designed from scratch, including scaling and monitoring on a cloud platform.
+
 ---
 
 ## 📽️ **Demo Video**
