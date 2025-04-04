@@ -78,15 +78,16 @@ Visit `http://127.0.0.1:8000/docs` for the Swagger UI!
 Load testing was conducted using **Locust** to simulate high traffic and analyze the system's robustness.
 
 ### 📊 Summary:
-- [Flood Simulation Results](/locust_logs.png)  
+- [Flood Simulation Results](/Locust_logs.png)  
 - **Visualizations:**  
   ![Flood Simulation](/Locust_charts.png)
+  ![Flood Simulation](/Locust_logs.png)
 
 
 ### 📁 Files:
--  [Flood Simulation Results](/locust_logs.png) 
+-  [Flood Simulation Results](/Locust_logs.png) 
 - Graph Example:  
-  ![Flood Simulation](/Locust_charts.png)g)
+  ![Flood Simulation](/Locust_charts.png)
 
 ---
 
@@ -103,6 +104,4 @@ Load testing was conducted using **Locust** to simulate high traffic and analyze
 
 ---
 ## Author: Abubakar Ahmed Umar
-## Contributing
-Pull requests and ideas are welcome. Fork the repo and submit your improvements!
 ---
