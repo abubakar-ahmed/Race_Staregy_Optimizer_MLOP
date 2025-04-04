@@ -1,7 +1,5 @@
 # Race_Staregy_Optimizer_MLOP
 ---
-# Youtube link: https://youtu.be/YCMgyP5ctNE
-
 ## **Project Description**
 
 The **Race Strategy Optimizer** is a web application that predicts the **optimal tire compound** (`soft`, `medium`, `hard`, `wet` or `intermidiate`) based on a combination of race parameters. It leverages a neural network classification model trained on a synthetic dataset to simulate real-world Formula 1 decision-making.
